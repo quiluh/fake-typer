@@ -1,14 +1,19 @@
 import keyboard
 
-file = [open("connections-essay.txt","r").read(),0]
+file = open("connections-essay.txt","r",encoding="utf-8").read()
+currentProgress = []
 
 def keyPress(event):
-    if event.name != "backspace":
+    global currentProgress
+    if event.name != "backspace" and len(currentProgress) + 1 < len(file):
         keyboard.press_and_release("backspace")
-        keyboard.press_and_release(file[0][file[1]])
-        file[1] += 1 if file[1] < len(file[0]) else 0
+        letter = file[len(currentProgress)]
+        keyboard.press_and_release(letter)
+        currentProgress.append(letter)
     else:
-        file[1] -= 1 if file[1] > 0 else 0
+        if len(currentProgress) > 0:
+            currentProgress = currentProgress[:-1]
 
 keyboard.on_press(keyPress)
 keyboard.wait("esc")
+
